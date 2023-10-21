@@ -27,14 +27,17 @@
         }
 
         function toggleDelivery(val) {
-            var cityField = document.querySelector(".userInfo.address");
-            if (val == 'pickup') {
-                cityField.style.display = "none";
-            } else {
-                cityField.style.display = "block";
-            }
-            updateTotal();
+            var cityFields = document.querySelectorAll(".userInfo.address");
+            cityFields.forEach(function(cityField) {
+                if (val == 'pickup') {
+                    cityField.style.display = "none";
+                } else {
+                    cityField.style.display = "flex";
+                }
+            });
+            updateTotal(); 
         }
+        
 
         function updateTotal() {
             var subtotal = 0;
@@ -67,18 +70,26 @@
         }
 
         function validateForm() {
-            var lname = document.getElementsByName('lname')[0].value;
-            var street = document.getElementsByName('street')[0].value;
-            var city = document.getElementsByName('city')[0].value;
-            var phone = document.getElementsByName('phone')[0].value;
-
-            if (!lname || !street || !city || !phone) {
-                alert("Please fill all the required fields!");
-                return false;
+            var lname = document.getElementsByName('lname')[0].value.trim();
+            var street = document.getElementsByName('street')[0].value.trim();
+            var city = document.getElementsByName('city')[0].value.trim();
+            var phone = document.getElementsByName('phone')[0].value.trim();
+            
+            var deliveryType = document.querySelector('input[name="p_or_d"]:checked').value;
+        
+            if (deliveryType === "pickup") {
+                if (!lname || !phone) {
+                    alert("Please fill all the required fields for pickup!");
+                    return false;
+                }
+            } else {
+                if (!lname || !street || !city || !phone) {
+                    alert("Please fill all the required fields for delivery!");
+                    return false;
+                }
             }
             return true;
         }
-
         menuItems = [
             new MenuItem("Chicken Chop Suey", 5.5),
             new MenuItem("Sweet and Sour Pork", 7.25),
